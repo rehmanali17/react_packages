@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import Posts from "./components/Posts";
+import {QueryClientProvider, QueryClient} from 'react-query'
+import { ReactQueryDevtools } from "react-query/devtools";
+import AddPost from "./components/AddPost";
+import Layout from "./components/Layout";
+import EditPost from "./components/EditPost";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
+import { ThemeProvider, createTheme } from "@material-ui/core";
+
+const theme = createTheme({
+  pallete: {
+    primary: {
+      main: '#fefefe'
+    }
+  }
+})
+
+const queryClient = new QueryClient()
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <Router>
+        <QueryClientProvider client={queryClient}>
+        <Layout>
+          <Switch>
+              <Route exact path="/" component={Posts} />
+              <Route exact path="/add" component={AddPost} />
+              <Route exact path="/edit/:id" component={EditPost} />
+            </Switch> 
+        </Layout>
+        <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </Router>
   );
 }
 
